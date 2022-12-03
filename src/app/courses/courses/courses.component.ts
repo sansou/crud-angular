@@ -13,23 +13,23 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class CoursesComponent implements OnInit {
 
-  courses$: Observable<Course[]> ;
-  displayedColumns = ['name', 'category'];
+  courses$: Observable<Course[]>;
+  displayedColumns = ['id', 'name', 'category'];
 
   constructor(private coursesService: CoursesService,
     public dialog: MatDialog
 
-    ) {
+  ) {
     this.courses$ = this.coursesService.list()
-    .pipe(
-      catchError(error => {
-        this.onError('Erro ao carregar cursos')
-        return of ([])
-      })
-    )
+      .pipe(
+        catchError(error => {
+          this.onError('Erro ao carregar cursos')
+          return of([])
+        })
+      )
   }
 
-  onError(errorMsg: string){
+  onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
     })
