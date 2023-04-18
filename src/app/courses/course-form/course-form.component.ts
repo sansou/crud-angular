@@ -1,7 +1,7 @@
 import { CoursesService } from './../services/courses.service';
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CourseFormComponent {
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private service: CoursesService,
     private _snackBar: MatSnackBar,
     private location: Location
@@ -23,7 +23,7 @@ export class CourseFormComponent {
     });
   }
 
-  form: FormGroup
+  form: UntypedFormGroup
 
   onSubmit() {
     this.service.save(this.form.value).subscribe(
