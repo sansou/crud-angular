@@ -13,7 +13,7 @@ export class CoursesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  list() {
+  findAll() {
     return this.httpClient.get<Course[]>(this.API).pipe(
       first(),
       // delay(2000),
@@ -38,6 +38,10 @@ export class CoursesService {
 
   private update(course: Partial<Course>) {
     return this.httpClient.put<Course>(`${this.API}/${course.id}`, course).pipe(first());
+  }
+
+  remove(id: string) {
+    return this.httpClient.delete<Course>(`${this.API}/${id}`).pipe(first());
   }
 
 }

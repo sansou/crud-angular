@@ -1,11 +1,12 @@
-import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from '../model/course';
 import { CoursesService } from '../services/courses.service';
+import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -14,16 +15,21 @@ import { CoursesService } from '../services/courses.service';
 })
 export class CoursesComponent implements OnInit {
 
-  courses$: Observable<Course[]>;
+  courses$: Observable<Course[]> | null = null;
 
   constructor(
     private coursesService: CoursesService,
     public dialog: MatDialog,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar,
 
   ) {
-    this.courses$ = this.coursesService.list()
+    this.refresh();
+  }
+
+  refresh() {
+    this.courses$ = this.coursesService.findAll()
       .pipe(
         catchError(error => {
           this.onError('Erro ao carregar cursos')
@@ -31,7 +37,6 @@ export class CoursesComponent implements OnInit {
         })
       )
   }
-
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
@@ -43,9 +48,24 @@ export class CoursesComponent implements OnInit {
 
   onAdd() {
     this.router.navigate(['new'], { relativeTo: this.route });
-
   }
+
   onEdit(course: Course) {
     this.router.navigate(['edit', course.id], { relativeTo: this.route });
   }
+
+  onRemove(course: Course) {
+    this.coursesService.remove(course.id).subscribe(
+      () => {
+        this.refresh()
+        this._snackBar.open('Curso removido com sucesso', 'X', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center'
+        });
+      },
+      () => this.onError("Erro ao tentar remover curso")
+    );
+  }
+
 }
