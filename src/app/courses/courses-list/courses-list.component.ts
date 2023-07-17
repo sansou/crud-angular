@@ -6,7 +6,7 @@ import { Course } from '../model/course';
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss']
 })
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent {
 
   @Input() courses: Course[] = [];
   @Output() add = new EventEmitter(false);
@@ -14,7 +14,6 @@ export class CoursesListComponent implements OnInit {
 
   readonly displayedColumns = ['id', 'name', 'category', 'actions'];
 
-  constructor() { }
 
   onAdd() {
     this.add.emit(true);
@@ -24,7 +23,5 @@ export class CoursesListComponent implements OnInit {
     this.edit.emit(course);
   }
 
-  ngOnInit(): void {
-  }
 
 }
