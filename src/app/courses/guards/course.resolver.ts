@@ -5,8 +5,8 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { Course } from 'src/app/model/course';
-import { CoursesService } from 'src/app/services/courses.service';
+import { CoursesService } from '../services/courses.service';
+import { Course } from '../model/course';
 
 @Injectable({
   providedIn: 'root'
