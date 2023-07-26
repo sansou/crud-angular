@@ -64,7 +64,7 @@ export class CoursesComponent implements OnInit {
       if (result) {
         this.coursesService.remove(course.id).subscribe(
           () => {
-            this.refresh()
+            this.refresh();
             this._snackBar.open('Curso removido com sucesso', 'X', {
               duration: 3000,
               verticalPosition: 'top',
